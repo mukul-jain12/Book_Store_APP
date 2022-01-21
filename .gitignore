@@ -1,0 +1,6 @@
+.git
+.idea
+__pycache__
+myenv
+.env
+book_store_app.log
