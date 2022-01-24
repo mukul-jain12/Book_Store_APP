@@ -72,8 +72,7 @@ def verification(is_verified: int, email_id: str):
         show_data_query = f"UPDATE users SET is_verified = 1 WHERE email_id='{email_id}'"
         cursor.execute(show_data_query)
         connection.commit()
-        user = [i for i in cursor]
-        return user
+        return "User Account Successfully Verified!!"
     else:
         raise Exception("User with this Id already verified!")
 
@@ -112,8 +111,8 @@ def update_user(user_id, users):
         return: employee detail in dictionary format
     """
     show_data_query = "UPDATE users SET user_name = '%s', email_id = '%s', password = '%s', mobile_number " \
-                      "= '%d' WHERE id = %d" % (users.user_name, users.email_id, users.password, users.mobile_number,
-                                                user_id)
+                      "= %d WHERE id = %d" % (users.user_name, users.email_id, users.password, users.mobile_number,
+                                              user_id)
     cursor.execute(show_data_query)
     connection.commit()
     user_data = retrieve_user(user_id)

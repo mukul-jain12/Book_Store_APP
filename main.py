@@ -8,7 +8,10 @@ from fastapi import FastAPI, Header
 from logger import logging
 from jwt_token.generate_token import *
 from service.user_service import *
+from service.book_service import *
 from schemas.users import Users
+from schemas.books import Books
+from service.email_service import send_mail
 
 app = FastAPI(title="Book Store App")
 
@@ -47,7 +50,7 @@ def get_user_details(user_id: int):
 
 
 @app.post("/user/registration/", tags=["USERS"])
-def user_registration(users: Users):
+async def user_registration(users: Users):
     """
     desc: created api to register the user into book store app.
     param1: Users class which contains schema
@@ -58,13 +61,14 @@ def user_registration(users: Users):
         logging.info("User Successfully Registered")
         logging.debug(f"User Details are : {user_details}")
         user_token = encode_register_token(user_details.email_id)
-        return {"status": 200, "message": "Successfully Registered The User", "token": user_token}
+        verification_mail = await send_mail(user_details.email_id, user_token)
+        return {"status": 200, "message": f"Successfully Registered The User!!", "token": user_token}
     except Exception as e:
         logging.error(f"Error: {e}")
         return {"status": 402, "message": "Error : Employee with this Id Already exist in database"}
 
 
-@app.post("/user/verification/{user_token}", tags=["USERS"])
+@app.post("/user/verification/{token}", tags=["USERS"])
 def user_verification(token: str = Header(None)):
     """
         desc: user verification by entering the token number generated at registration
@@ -134,6 +138,92 @@ def user_login(email_id: str, password: str):
     except Exception as e:
         logging.error(f"Error: {e}")
         return {"status": 401, "message": f"Error : {e}"}
+
+
+@app.get("/books/", tags=["BOOKS"])
+def get_all_users_details():
+    """
+        desc: created api to get all the books detail.
+        return: books detail in SMD format.
+    """
+    try:
+        book_details = retrieve_all_books()
+        logging.info("Successfully Get All Books Details")
+        logging.debug(f"Book Details are : {book_details}")
+        return {"status": 200, "message": "Successfully Get All Books Details", "data": book_details}
+    except Exception as e:
+        logging.error(f"Error: {e}")
+        return {"status": 404, "message": f"Error : {e}"}
+
+
+@app.get("/book/", tags=["BOOKS"])
+def get_book_details(book_id: int):
+    """
+        desc: created api to get a book details.
+        param: book_id: it is a book id.
+        return: book details in SMD format.
+        """
+    try:
+        book_details = retrieve_book(book_id)
+        logging.info("Successfully Get A Book Detail")
+        logging.debug(f"Book Details are : {book_details}")
+        return {"status": 200, "message": "Successfully Get A Book Details", "data": book_details}
+    except Exception as e:
+        logging.error(f"Error: {e}")
+        return {"status": 404, "message": f"Error : {e}"}
+
+
+@app.post("/book/", tags=["BOOKS"])
+def add_new_book(books: Books):
+    """
+    desc: created api to add the book into book store app.
+    param1: Books class which contains schema
+    """
+    try:
+        book_details = add_book(books)
+        logging.info("Book Successfully Added")
+        logging.debug(f"Book Details are : {book_details}")
+        return {"status": 200, "message": f"Successfully Added The Book!!", "data": book_details}
+    except Exception as e:
+        logging.error(f"Error: {e}")
+        return {"status": 402, "message": "Error : Book with this Id Already exist in database"}
+
+
+@app.delete("/book/", tags=["BOOKS"])
+def delete_book_details(book_id: int):
+    """
+    desc: created api to delete the book details using book id
+    param: book_id: it is a book id
+    return: b_id in SMD format
+    """
+    try:
+        retrieve_book(book_id)
+        b_id = delete_book(book_id)
+        logging.info("Successfully Deleted The Book Details")
+        logging.debug(f"Book ID is : {b_id}")
+        return {"status": 204, "message": "Successfully Deleted The Book Details", "data": b_id}
+    except Exception as e:
+        logging.error(f"Error: {e}")
+        return {"status": 404, "message": f"Error : {e}"}
+
+
+@app.put("/book/", tags=["BOOKS"])
+def update_book_details(book_id: int, books: Books):
+    """
+    desc: created api to update any book details
+    param1: book_id: it is a user id
+    param2: Books class which contains schema
+    return: updated book details in SMD format
+    """
+    try:
+        retrieve_book(book_id)
+        book_details = update_book(book_id, books)
+        logging.info("Successfully Updated The Book Details")
+        logging.debug(f"Book Details are : {book_details}")
+        return {"status": 200, "message": "Successfully Updated The Book Details", "data": book_details}
+    except Exception as e:
+        logging.error(f"Error: {e}")
+        return {"status": 500, "message": f"Error : {e}"}
 
 
 if __name__ == '__main__':
