@@ -23,19 +23,18 @@ conf = ConnectionConfig(
 
 async def send_mail(email: str, token_id: str):
     template = f"""
-    <form method="post">
-    <p>Hi !!!
-    <br> <a href="http://127.0.0.1:8000/user/verification/{token_id}">Click Here To Verfiy</a></p>
-    </form>
+    Hello,
+    
+    you have registered to Book Store App. To verify click here
+    <a href="http://127.0.0.1:8000/user/verification/{token_id}"><button>Click Here To Verfiy</button></a>
     """
 
     message = MessageSchema(
         subject="Account Verification: Book Store App",
         recipients=[email],
         body=template,
-        subtype="html"
+        subtype='html'
     )
     fm = FastMail(conf)
     await fm.send_message(message)
-    print(message)
     return "Verification mail has been sent to your mail id"
