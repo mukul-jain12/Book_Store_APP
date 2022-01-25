@@ -36,3 +36,14 @@ def encode_login_token(user_id):
     payload = {"user_id": user_id}
     token_id = jwt.encode(payload, "secret")
     return token_id
+
+
+def decode_login_token(user_id):
+    """
+        desc: this function will encode the payload into a token
+        param: emp_id: it is an employee id
+        return: generated token id
+    """
+    payload = {"user_id": user_id}
+    token_id = jwt.encode(payload, "secret", algorithm=["HS256"])
+    return token_id
