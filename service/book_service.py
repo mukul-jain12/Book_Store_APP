@@ -3,6 +3,8 @@
     @Author : mukul
     @Date :   23-01-2022
 """
+from io import StringIO
+
 from fastapi import UploadFile
 
 from core.db import DBConnection
@@ -82,22 +84,16 @@ def update_book(book_id, books):
     return book_data
 
 
-# async def insert_data_in_book(upload_file: UploadFile):
-#     """
-#         desc: query to insert book details in database
-#         param: author_name, title, image, quantity, price, description.
-#         return: book detail in dictionary format
-#     """
-#     books = await pd.read_csv(upload_file)
-#     print(books)
-#     for i, row in books.iterrows():
-#         sql = "INSERT INTO books (" + cols + ") VALUES(" + "%s" * (len(row) - 1) + "%s)"
-#         cursor.execute(sql, tuple(row))
-#         connection.commit()
-
-#     show_data_query = "INSERT INTO books (author_name, title, image, quantity, price, description) " \
-#                       "VALUES('%s', '%s', '%s', %d, %d, '%s')" % \
-#                       (books.author_name, books.title, books.image, books.quantity, books.price, books.description)
-#     cursor.execute(show_data_query)
-#     connection.commit()
-#     return books
+async def insert_data_in_book(file):
+    """
+        desc: query to insert book details in database
+        param: author_name, title, image, quantity, price, description.
+        return: book detail in dictionary format
+    """
+    books_dataframe = pd.read_csv(StringIO(str(file.file.read(), 'utf-8')), encoding='utf-8')
+    column_name = ", ".join([str(i) for i in books_dataframe.columns.tolist()])
+    for i, rows in books_dataframe.iterrows():
+        sql = "INSERT INTO books (" + column_name + ") VALUES (" + "%s," * (len(rows)-1) + "%s)"
+        cursor.execute(sql, tuple(rows))
+        connection.commit()
+    return "Books are Added Successfully!!"
