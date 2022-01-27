@@ -7,14 +7,13 @@ from logger import logging
 from service.wishlist_service import *
 from schemas.wishlist import Wishlist
 from routers.user_apis import verify_token
-from fastapi import APIRouter, Header
+from fastapi import APIRouter, Depends
 
 route = APIRouter(tags=["WISHLIST"])
 
 
 @route.get("/wishlist/")
-@verify_token
-def get_all_wishlist(token: str = Header(None)):
+def get_all_wishlist(token=Depends(verify_token)):
     """
         desc: created api to get a wishlist for user.
         param: user_id: it is a user id.
@@ -32,8 +31,7 @@ def get_all_wishlist(token: str = Header(None)):
 
 
 @route.post("/wishlist/")
-@verify_token
-def add_books_to_wishlist(wishlist: Wishlist, token: str = Header(None)):
+def add_books_to_wishlist(wishlist: Wishlist, token=Depends(verify_token)):
     """
     desc: created api to add book to wishlist into book store app.
     param1: Wishlist class which contains schema
@@ -50,8 +48,7 @@ def add_books_to_wishlist(wishlist: Wishlist, token: str = Header(None)):
 
 
 @route.delete("/wishlist/")
-@verify_token
-def delete_books_from_wishlist(wishlist: Wishlist, token: str = Header(None)):
+def delete_books_from_wishlist(wishlist: Wishlist, token=Depends(verify_token)):
     """
     desc: created api to remove book from wishlist.
     param1: Wishlist class which contains schema

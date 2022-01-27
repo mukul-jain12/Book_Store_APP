@@ -3,31 +3,24 @@
     @Author : mukul
     @Date :   24-01-2022
 """
-from functools import wraps
-
 from logger import logging
 from jwt_token.generate_token import *
 from service.user_service import *
 from schemas.users import Users
 from service.email_service import send_mail
-from fastapi import APIRouter, Header
+from fastapi import APIRouter, Header, HTTPException
 
 route = APIRouter(tags=["USERS"])
 
 
-def verify_token(function):
-    @wraps(function)
-    def wrapper(wishlist, token):
-        if token is None:
-            resp = {'message': 'Token not provided in the header', "status": 400}
-            return resp
-        try:
-            user_id = decode_login_token(token)
-        except Exception as exception:
-            resp = {'message': exception.__str__(), "status": 403}
-            return resp
-        return function(wishlist, user_id)
-    return wrapper
+def verify_token(token: str = Header(None)):
+    if token is None:
+        raise HTTPException(status_code=401, detail="Token is not given in Header")
+    try:
+        user_id = decode_login_token(token)
+        return user_id
+    except Exception as exc:
+        raise HTTPException(status_code=403, detail="You are not a authorized person")
 
 
 @route.get("/users/")
