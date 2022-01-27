@@ -17,18 +17,16 @@ route = APIRouter(tags=["USERS"])
 
 def verify_token(function):
     @wraps(function)
-    def wrapper(*args, token):
+    def wrapper(wishlist, token):
         if token is None:
             resp = {'message': 'Token not provided in the header', "status": 400}
             return resp
         try:
-            print(args)
             user_id = decode_login_token(token)
-            token = user_id
         except Exception as exception:
             resp = {'message': exception.__str__(), "status": 403}
             return resp
-        return function(*args, token)
+        return function(wishlist, user_id)
     return wrapper
 
 
