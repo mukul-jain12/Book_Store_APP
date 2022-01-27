@@ -97,13 +97,13 @@ def update_book_details(book_id: int, books: Books):
         return {"status": 500, "message": f"Error : {e}"}
 
 
-# @route.post("/uploadfile/")
-# async def create_upload_file(file: UploadFile = File(...)):
-#     try:
-#         detail = await insert_data_in_book(file.filename)
-#         logging.info("Successfully Updated The Book Details")
-#         logging.debug(f"Book Details are : {detail}")
-#         return {"status": 200, "message": "Successfully Added The Book File", "data": detail}
-#     except Exception as e:
-#         logging.error(f"Error: {e}")
-#         return {"status": 500, "message": f"Error : {e}"}
+@route.post("/uploadFile/")
+async def create_upload_file(file: UploadFile = File(...)):
+    try:
+        detail = await insert_data_in_book(file)
+        logging.info("Successfully Updated The Book Details")
+        logging.debug(detail)
+        return {"status": 200, "message": "Successfully Added The Book File"}
+    except Exception as e:
+        logging.error(f"Error: {e}")
+        return {"status": 500, "message": f"Error : {e}"}

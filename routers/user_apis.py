@@ -3,6 +3,8 @@
     @Author : mukul
     @Date :   24-01-2022
 """
+from functools import wraps
+
 from logger import logging
 from jwt_token.generate_token import *
 from service.user_service import *
@@ -11,6 +13,21 @@ from service.email_service import send_mail
 from fastapi import APIRouter, Header
 
 route = APIRouter(tags=["USERS"])
+
+
+def verify_token(function):
+    @wraps(function)
+    def wrapper(wishlist, token):
+        if token is None:
+            resp = {'message': 'Token not provided in the header', "status": 400}
+            return resp
+        try:
+            user_id = decode_login_token(token)
+        except Exception as exception:
+            resp = {'message': exception.__str__(), "status": 403}
+            return resp
+        return function(wishlist, user_id)
+    return wrapper
 
 
 @route.get("/users/")
