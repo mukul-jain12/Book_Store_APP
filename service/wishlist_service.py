@@ -14,7 +14,7 @@ def retrieve_wishlist(user_id):
         desc: query to get all wishlist detail from database
         return: wishlist detail in dictionary format
     """
-    get_wishlist_query = f"SELECT * FROM wishlist where user_id = {user_id}"
+    get_wishlist_query = f"SELECT * FROM wishlist where user_id = %d" % user_id
     cursor.execute(get_wishlist_query)
     wish_list = [i for i in cursor]
     if wish_list:
@@ -34,14 +34,13 @@ def add_to_wishlist(user_id, wishlist):
     return "Book Successfully Added in Wishlist"
 
 
-def remove_book(user_id, book_id):
+def remove_book(user_id, wishlist):
     """
         desc: query to delete book details from wishlist
         param: id: book id, which you want to delete.
         return: book id which is deleted from wishlist
     """
-    print(user_id)
-    show_data_query = f"delete from wishlist where user_id = {user_id} and book_id = {book_id}"
+    show_data_query = "delete from wishlist where user_id = %d and book_id = %d" % (user_id, wishlist.book_id)
     cursor.execute(show_data_query)
     connection.commit()
-    return book_id
+    return wishlist.book_id

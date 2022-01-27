@@ -14,7 +14,7 @@ route = APIRouter(tags=["WISHLIST"])
 
 @route.get("/wishlist/")
 @verify_token
-def get_all_wishlist(wishlist: Wishlist, token: str = Header(None)):
+def get_all_wishlist(token: str = Header(None)):
     """
         desc: created api to get a wishlist for user.
         param: user_id: it is a user id.
