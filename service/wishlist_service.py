@@ -14,7 +14,9 @@ def retrieve_wishlist(user_id):
         desc: query to get all wishlist detail from database
         return: wishlist detail in dictionary format
     """
-    get_wishlist_query = f"SELECT * FROM wishlist where user_id = %d" % user_id
+    get_wishlist_query = f"SELECT wishlist.id, user_id, book_id, books.title, books.author_name, books.price, " \
+                         f"books.quantity FROM wishlist INNER JOIN books on books.id = wishlist.book_id where user_id" \
+                         f" = %d" % user_id
     cursor.execute(get_wishlist_query)
     wish_list = [i for i in cursor]
     if wish_list:
