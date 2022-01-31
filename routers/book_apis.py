@@ -57,7 +57,7 @@ def add_new_book(books: Books):
         return {"status": 200, "message": f"Successfully Added The Book!!", "data": book_details}
     except Exception as e:
         logging.error(f"Error: {e}")
-        return {"status": 402, "message": "Error : Book with this Id Already exist in database"}
+        return {"status": 402, "message": f"{e}"}
 
 
 @route.delete("/book/", )

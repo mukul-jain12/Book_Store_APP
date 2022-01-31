@@ -72,7 +72,7 @@ async def user_registration(users: Users):
         return {"status": 200, "message": f"Successfully Registered The User!!", "token": user_token}
     except Exception as e:
         logging.error(f"Error: {e}")
-        return {"status": 402, "message": "Error : Employee with this Id Already exist in database"}
+        return {"status": 402, "message": f"Error : {e}"}
 
 
 @route.get("/user/verification/{token}")
@@ -88,7 +88,7 @@ def user_verification(token: str = Header(None)):
         return {"status": 200, "message": "Successfully Done User Verification!!", "data": verify_user}
     except Exception as e:
         logging.error(f"Error: {e}")
-        return {"status": 401, "message": f"{e}"}
+        return {"status": 401, "message": f"Error: {e}"}
 
 
 @route.delete("/user/")
