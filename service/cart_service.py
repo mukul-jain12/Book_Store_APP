@@ -17,9 +17,9 @@ def retrieve_cart_item(user_id):
     get_cart_query = f"SELECT * FROM cart where user_id = %d" % user_id
     cursor.execute(get_cart_query)
     connection.commit()
-    wish_list = [i for i in cursor]
-    if wish_list:
-        return wish_list
+    cart_list = [i for i in cursor]
+    if cart_list:
+        return cart_list
     else:
         raise Exception("There is no result for the cart.")
 
