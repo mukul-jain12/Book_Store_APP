@@ -18,6 +18,7 @@ def retrieve_wishlist(user_id):
                          f"books.quantity FROM wishlist INNER JOIN books on books.id = wishlist.book_id where user_id" \
                          f" = %d" % user_id
     cursor.execute(get_wishlist_query)
+    connection.commit()
     wish_list = [i for i in cursor]
     if wish_list:
         return wish_list

@@ -59,6 +59,7 @@ BEGIN
 END$$
 DELIMITER ;
 
+
 drop procedure get_ordered_details;
 drop procedure place_order;
 call place_order(3, "Dungarpur");

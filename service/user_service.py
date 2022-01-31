@@ -16,6 +16,7 @@ def retrieve_all_users():
     """
     get_user_query = "SELECT * FROM users"
     cursor.execute(get_user_query)
+    connection.commit()
     users = [i for i in cursor]
     if users:
         return users
@@ -31,6 +32,7 @@ def retrieve_user(user_id: int):
     """
     show_data_query = f"SELECT * FROM users WHERE id={user_id}"
     cursor.execute(show_data_query)
+    connection.commit()
     user = [i for i in cursor]
     if user:
         return user
@@ -85,6 +87,7 @@ def login_into_book_store(email_id, password):
     """
     show_data_query = f"SELECT * FROM users WHERE email_id = '{email_id}' and password = '{password}'"
     cursor.execute(show_data_query)
+    connection.commit()
     user = [i for i in cursor]
     if user:
         return user

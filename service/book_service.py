@@ -21,6 +21,7 @@ def retrieve_all_books():
     """
     get_books_query = "SELECT * FROM books"
     cursor.execute(get_books_query)
+    connection.commit()
     books = [i for i in cursor]
     if books:
         return books
@@ -36,6 +37,7 @@ def retrieve_book(book_id: int):
     """
     show_data_query = f"SELECT * FROM books WHERE id={book_id}"
     cursor.execute(show_data_query)
+    connection.commit()
     book = [i for i in cursor]
     if book:
         return book
