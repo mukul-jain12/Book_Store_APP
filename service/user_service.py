@@ -42,10 +42,10 @@ def retrieve_user(user_id: int):
 
 def register_user(users):
     """
-            desc: query to insert employee details in database
-            param: name, profile, gender, department, salary, start date.
-            return: employee detail in dictionary format
-        """
+        desc: query to insert employee details in database
+        param: name, profile, gender, department, salary, start date.
+        return: employee detail in dictionary format
+    """
     show_data_query = "insert into users (user_name, email_id, password, mobile_number) values('%s', '%s', '%s', %d)" \
                       % (users.user_name, users.email_id, users.password, users.mobile_number)
     cursor.execute(show_data_query)
@@ -59,7 +59,7 @@ def retrieve_user_by_email_id(email_id: str):
         param: user id
         return: employee detail in dictionary format
     """
-    show_data_query = f"SELECT * FROM users WHERE email_id='{email_id}'"
+    show_data_query = "SELECT * FROM users WHERE email_id = '%s'" % email_id
     cursor.execute(show_data_query)
     connection.commit()
     user = [i for i in cursor]

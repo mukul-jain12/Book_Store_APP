@@ -60,7 +60,7 @@ def add_new_book(books: Books):
         return {"status": 402, "message": f"{e}"}
 
 
-@route.delete("/book/", )
+@route.delete("/book/{book_id}", )
 def delete_book_details(book_id: int):
     """
     desc: created api to delete the book details using book id
@@ -78,7 +78,7 @@ def delete_book_details(book_id: int):
         return {"status": 404, "message": f"Error : {e}"}
 
 
-@route.put("/book/", )
+@route.put("/book/{book_id}", )
 def update_book_details(book_id: int, books: Books):
     """
     desc: created api to update any book details

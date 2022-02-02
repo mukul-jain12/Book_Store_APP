@@ -37,13 +37,13 @@ def add_to_wishlist(user_id, wishlist):
     return "Book Successfully Added in Wishlist"
 
 
-def remove_book(user_id, wishlist):
+def remove_book(user_id, book_id):
     """
         desc: query to delete book details from wishlist
         param: id: book id, which you want to delete.
         return: book id which is deleted from wishlist
     """
-    show_data_query = "delete from wishlist where user_id = %d and book_id = %d" % (user_id, wishlist.book_id)
+    show_data_query = "delete from wishlist where user_id = %d and book_id = %d" % (user_id, book_id)
     cursor.execute(show_data_query)
     connection.commit()
-    return wishlist.book_id
+    return book_id

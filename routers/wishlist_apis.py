@@ -47,8 +47,8 @@ def add_books_to_wishlist(wishlist: Wishlist, token=Depends(verify_token)):
         return {"status": 402, "message": f"Error : {e}"}
 
 
-@route.delete("/wishlist/")
-def delete_books_from_wishlist(wishlist: Wishlist, token=Depends(verify_token)):
+@route.delete("/wishlist/{book_id}")
+def delete_books_from_wishlist(book_id: int, token=Depends(verify_token)):
     """
     desc: created api to remove book from wishlist.
     param1: Wishlist class which contains schema
@@ -56,7 +56,7 @@ def delete_books_from_wishlist(wishlist: Wishlist, token=Depends(verify_token)):
     """
     try:
         user_id = token
-        wish_list = remove_book(user_id, wishlist)
+        wish_list = remove_book(user_id, book_id)
         logging.info("Book Successfully Removed From wishlist")
         return {"status": 200, "message": f"Book Successfully Removed From wishlist!!", "data": wish_list}
     except Exception as e:

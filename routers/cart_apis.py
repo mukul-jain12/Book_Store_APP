@@ -47,7 +47,7 @@ def add_books_to_cart(cart: Cart, token=Depends(verify_token)):
         return {"status": 402, "message": f"Error : {e}"}
 
 
-@route.delete("/cart/")
+@route.delete("/cart/{book_id}")
 def delete_books_from_cart(book_id: int, token=Depends(verify_token)):
     """
     desc: created api to remove book from cart.
@@ -56,6 +56,7 @@ def delete_books_from_cart(book_id: int, token=Depends(verify_token)):
     """
     try:
         user_id = token
+        retrieve_one_item(user_id, book_id)
         cart_list = remove_book_from_cart(user_id, book_id)
         logging.info("Book Successfully Removed From Cart")
         return {"status": 200, "message": f"Book Successfully Removed From Cart!!", "data": cart_list}
@@ -64,8 +65,8 @@ def delete_books_from_cart(book_id: int, token=Depends(verify_token)):
         return {"status": 402, "message": f"Error : {e}"}
 
 
-@route.put("/cart/")
-def update_books_quantity_cart(cart: Cart, quantity: int, token=Depends(verify_token)):
+@route.put("/cart/{book_id}/{quantity}")
+def update_books_quantity_cart(book_id: int, quantity: int, token=Depends(verify_token)):
     """
     desc: created api to remove book from cart.
     param1: Cart class which contains schema
@@ -73,7 +74,8 @@ def update_books_quantity_cart(cart: Cart, quantity: int, token=Depends(verify_t
     """
     try:
         user_id = token
-        cart_list = update_cart(user_id, quantity, cart)
+        retrieve_one_item(user_id, book_id)
+        cart_list = update_cart(user_id, quantity, book_id)
         logging.info("Cart Successfully Updated")
         return {"status": 200, "message": f"Cart Successfully Updated!!", "data": cart_list}
     except Exception as e:
