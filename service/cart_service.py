@@ -24,6 +24,21 @@ def retrieve_cart_item(user_id):
         raise Exception("There is no result for the cart.")
 
 
+def retrieve_one_item(user_id, book_id):
+    """
+        desc: query to get all cart detail from database
+        return: cart detail in dictionary format
+    """
+    get_cart_query = f"SELECT * FROM cart where user_id = %d and book_id = %d" % (user_id, book_id)
+    cursor.execute(get_cart_query)
+    connection.commit()
+    cart_list = [i for i in cursor]
+    if cart_list:
+        return cart_list
+    else:
+        raise Exception("There is no result for these book in the cart.")
+
+
 def add_to_cart(user_id, cart):
     """
         desc: query to insert book details in cart
@@ -47,14 +62,14 @@ def remove_book_from_cart(user_id, book_id):
     return book_id
 
 
-def update_cart(user_id, quantity, cart):
+def update_cart(user_id, quantity, book_id):
     """
         desc: query to update employee details in database
         param: id, name, profile, gender, department, salary, start date.
         return: employee detail in dictionary format
     """
     show_data_query = "UPDATE cart SET quantity = %d WHERE user_id = %d and book_id = %d" % \
-                      (quantity, user_id, cart.book_id)
+                      (quantity, user_id, book_id)
     cursor.execute(show_data_query)
     connection.commit()
     user_data = retrieve_cart_item(user_id)

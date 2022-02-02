@@ -91,7 +91,7 @@ def user_verification(token: str = Header(None)):
         return {"status": 401, "message": f"Error: {e}"}
 
 
-@route.delete("/user/")
+@route.delete("/user/{user_id}")
 def delete_user_details(user_id: int):
     """
     desc: created api to delete the user details using user id
@@ -109,7 +109,7 @@ def delete_user_details(user_id: int):
         return {"status": 404, "message": f"Error : {e}"}
 
 
-@route.put("/user/")
+@route.put("/user/{user_id}")
 def update_user_details(user_id: int, users: Users):
     """
     desc: created api to update any item in the database table
@@ -141,7 +141,7 @@ def user_login(email_id: str, password: str):
         logging.info("Successfully Login into Book Store App!!")
         logging.debug(f"User Details are : {user_details}")
         user_token = encode_login_token(user_details[0]["id"])
-        return {"status": 200, "message": "Successfully Generated the token", "token": user_token, "data": user_details}
+        return {"status": 200, "message": "Successfully Logged In and Generated the token", "token": user_token, "data": user_details}
     except Exception as e:
         logging.error(f"Error: {e}")
         return {"status": 401, "message": f"Error : {e}"}
