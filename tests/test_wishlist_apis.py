@@ -34,4 +34,4 @@ class TestCase:
     def test_if_user_is_deleted(self, book_id, token_id):
         response = client.delete(f"/wishlist/{book_id}", headers={'token': token_id})
         json_response = response.json()
-        assert json_response["message"] != "Book Successfully Removed From wishlist!!"
+        assert json_response["message"] == "Book Successfully Removed From wishlist!!"

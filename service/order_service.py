@@ -31,8 +31,8 @@ def retrieve_user_order(user_id: int):
                       f" %d" % user_id
     cursor.execute(show_data_query)
     connection.commit()
-    user = [i for i in cursor]
-    if user:
-        return user
+    order = [i for i in cursor]
+    if order:
+        return order
     else:
-        raise Exception("User with this Id doesn't exist in the Database!")
+        raise Exception("User not ordered any book from the book.")

@@ -41,7 +41,7 @@ def get_all_order_detail(token=Depends(verify_token)):
         user_id = token
         cart_list = retrieve_user_order(user_id)
         logging.info("Get All Order Successfully")
-        return {"status": 200, "message": f"Successfully Get All Order For The User: {user_id}", "data": cart_list}
+        return {"status": 200, "message": f"Successfully Get All Order.", "data": cart_list}
     except Exception as e:
         logging.error(f"Error: {e}")
         return {"status": 402, "message": f"Error : {e}"}
